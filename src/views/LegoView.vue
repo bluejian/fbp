@@ -9,7 +9,7 @@
         </div>
         <div class="hero-box">
           <div class="manual-image-container">
-             <img src="/images/lego-brand-bg.png" alt="LEGO" class="manual-bg" />
+             <img :src="getImg('/images/lego-brand-bg.png')" alt="LEGO" class="manual-bg" />
              <div class="manual-overlay-graphics">
                 <div class="piece-count">1,000,000+ PCS</div>
                 <div class="age-label">1+</div>
@@ -117,12 +117,13 @@
 </template>
 
 <script setup>
+import { getImg } from '../utils/imagePath'
 import { ref, onMounted } from 'vue'
 
 const message = ref(`EVERYTHING IS AWESOME!\n\n지안이의 첫해 조립이 드디어 완성되었습니다.\n함께 오셔서 마지막 브릭 하나를 채워주시고\n지안이의 멋진 성장을 축하해주세요!`)
 const eventDate = ref('2026.03.07 SAT PM 6:00')
 const venueName = ref('루엘 파티플레이스')
-const photos = ref(['/images/photo1.jpg', '/images/photo2.jpg', '/images/photo3.jpg', '/images/photo4.jpg'])
+const photos = ref([getImg('/images/photo1.jpg'), getImg('/images/photo2.jpg'), getImg('/images/photo3.jpg'), getImg('/images/photo4.jpg')])
 const kakaoMapUrl = 'https://map.kakao.com/link/to/236178717'
 const naverMapUrl = 'https://naver.me/GOPeemGQ'
 

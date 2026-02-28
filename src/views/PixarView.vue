@@ -2,7 +2,7 @@
   <div class="pixar-brand-theme">
     <div class="scroll-container">
       <!-- Authentic Toy Story Room Intro -->
-      <header class="pixar-hero" :style="{ backgroundImage: `url('/images/pixar-brand-bg.png')` }">
+      <header class="pixar-hero" :style="{ backgroundImage: `url(getImg('/images/pixar-brand-bg.png'))` }">
         <div class="room-overlay"></div>
         <div class="hero-content reveal">
           <div class="pixar-intro">Disney • Pixar</div>
@@ -15,7 +15,7 @@
           
           <div class="baby-toy-frame">
             <div class="luxo-ball"></div>
-            <img src="/images/baby-cutout.png" alt="Jian" class="baby-cutout" />
+            <img :src="getImg('/images/baby-cutout.png')" alt="Jian" class="baby-cutout" />
           </div>
 
           <div class="mission-brief">
@@ -94,12 +94,13 @@
 </template>
 
 <script setup>
+import { getImg } from '../utils/imagePath'
 import { ref, onMounted } from 'vue'
 
 const message = ref(`To Infinity and Beyond!\nOur favorite little adventurer\nis turning ONE today.\n\nYou're invited to join Jian's\nvery first birthday story!`)
 const eventDate = ref('MARCH 07, 2026')
 const venueName = ref('RUELLE PARTY PLACE')
-const photos = ref(['/images/photo1.jpg', '/images/photo2.jpg', '/images/photo3.jpg', '/images/photo4.jpg'])
+const photos = ref([getImg('/images/photo1.jpg'), getImg('/images/photo2.jpg'), getImg('/images/photo3.jpg'), getImg('/images/photo4.jpg')])
 const kakaoMapUrl = 'https://map.kakao.com/link/to/236178717'
 const naverMapUrl = 'https://naver.me/GOPeemGQ'
 

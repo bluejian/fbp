@@ -3,15 +3,15 @@
     <div class="scroll-container">
       <!-- Authentic Totoro Bus Stop Header -->
       <header class="ghibli-hero">
-        <div class="watercolor-canvas" :style="{ backgroundImage: `url('/images/ghibli-brand-bg.png')` }">
+        <div class="watercolor-canvas" :style="{ backgroundImage: `url(getImg('/images/ghibli-brand-bg.png'))` }">
           <div class="rain-overlay"></div>
           <div class="fog-overlay"></div>
         </div>
         <div class="hero-content reveal">
           <h1 class="ghibli-brand-title">JI-AN</h1>
-          <div class="japanese-sub">となりの ジ안 이</div>
+          <div class="japanese-sub">となりの 지안 이</div>
           <div class="spirit-frame">
-            <img src="/images/baby-cutout.png" alt="Jian" class="baby-spirit" />
+            <img :src="getImg('/images/baby-cutout.png')" alt="Jian" class="baby-spirit" />
             <div class="leaf-umbrella">🍃</div>
           </div>
           <div class="event-brief">
@@ -90,12 +90,13 @@
 </template>
 
 <script setup>
+import { getImg } from '../utils/imagePath'
 import { ref, onMounted } from 'vue'
 
 const message = ref(`어느 무성한 숲 속,\n작은 요정 지안이가 찾아온 지 일 년.\n\n바람이 전하는 따뜻한 초대장에 실어\n여러분을 행복의 숲으로 부릅니다.\n소중한 걸음을 함께해 주세요.`)
 const eventDate = ref('2026. 03. 07')
 const venueName = ref('루엘 파티플레이스')
-const photos = ref(['/images/photo1.jpg', '/images/photo2.jpg', '/images/photo3.jpg', '/images/photo4.jpg'])
+const photos = ref([getImg('/images/photo1.jpg'), getImg('/images/photo2.jpg'), getImg('/images/photo3.jpg'), getImg('/images/photo4.jpg')])
 const kakaoMapUrl = 'https://map.kakao.com/link/to/236178717'
 const naverMapUrl = 'https://naver.me/GOPeemGQ'
 

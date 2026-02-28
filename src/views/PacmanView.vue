@@ -109,6 +109,7 @@
 </template>
 
 <script setup>
+import { getImg } from '../utils/imagePath'
 import { ref, onMounted } from 'vue'
 
 const gameStarted = ref(false)
@@ -116,7 +117,7 @@ const score = ref(0)
 const message = ref(`WAKA WAKA!\n지안이의 첫 번째 스테이지가\n드디어 시작되었습니다!\n\n최종 보스(돌잡이)를 향한\n지안이의 여정에 함께해주시고\n많은 축하 포인트 부탁드려요!`)
 const eventDate = ref('2026.03.07 18:00')
 const venueName = ref('루엘 파티플레이스')
-const photos = ref(['/images/photo1.jpg', '/images/photo2.jpg', '/images/photo3.jpg', '/images/photo4.jpg'])
+const photos = ref([getImg('/images/photo1.jpg'), getImg('/images/photo2.jpg'), getImg('/images/photo3.jpg'), getImg('/images/photo4.jpg')])
 const kakaoMapUrl = 'https://map.kakao.com/link/to/236178717'
 const naverMapUrl = 'https://naver.me/GOPeemGQ'
 

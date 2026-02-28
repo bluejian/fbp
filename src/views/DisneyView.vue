@@ -9,9 +9,9 @@
           <h1 class="main-title">A Magical Celebration</h1>
           <div class="baby-portrait">
             <div class="castle-outline">
-              <img src="/images/disney-bg.png" alt="Castle" class="castle-img" />
+              <img :src="getImg('/images/disney-bg.png')" alt="Castle" class="castle-img" />
             </div>
-            <!-- <img src="/images/baby-cutout.png" alt="Jian" class="baby-img" /> -->
+            <!-- <img :src="getImg('/images/baby-cutout.png')" alt="Jian" class="baby-img" /> -->
           </div>
           <div class="welcome-text">지안이의 첫 번째 생일 파티에 초대합니다</div>
         </div>
@@ -74,12 +74,13 @@
 </template>
 
 <script setup>
+import { getImg } from '../utils/imagePath'
 import { ref, onMounted } from 'vue'
 
 const message = ref(`꿈같은 시간들이 모여\n지안이의 첫 번째 생일이 되었습니다.\n\n지안이의 앞날이 동화처럼 반짝일 수 있도록\n함께 자리를 빛내어 마법을 더해주세요.`)
 const eventDate = ref('2026. 03. 07 SAT PM 6:00')
 const venueName = ref('루엘 파티플레이스 (수원)')
-const photos = ref(['/images/photo1.jpg', '/images/photo2.jpg', '/images/photo3.jpg', '/images/photo4.jpg'])
+const photos = ref([getImg('/images/photo1.jpg'), getImg('/images/photo2.jpg'), getImg('/images/photo3.jpg'), getImg('/images/photo4.jpg')])
 const kakaoMapUrl = 'https://map.kakao.com/link/to/236178717'
 const naverMapUrl = 'https://naver.me/GOPeemGQ'
 

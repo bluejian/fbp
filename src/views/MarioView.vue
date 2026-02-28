@@ -35,21 +35,21 @@
 
         <!-- Stage elements (scroll with stageOffset) -->
         <div class="stage-track" :style="{ transform: `translateX(${-stageOffset}vw)` }">
-          <!-- <img src="/images/mario/mushroom.webp" class="sprite" style="left:80vw; bottom:42%; width:50px;" /> -->
+          <!-- <img :src="getImg('/images/mario/mushroom.webp')" class="sprite" style="left:80vw; bottom:42%; width:50px;" /> -->
           <div class="block-row" style="left:190vw; bottom:50%;">
-            <img src="/images/mario/mario-brick.png" class="sprite blk" />
-            <img src="/images/mario/mario-q-block.png" class="sprite blk q-glow" />
-            <img src="/images/mario/mario-brick.png" class="sprite blk" />
+            <img :src="getImg('/images/mario/mario-brick.png')" class="sprite blk" />
+            <img :src="getImg('/images/mario/mario-q-block.png')" class="sprite blk q-glow" />
+            <img :src="getImg('/images/mario/mario-brick.png')" class="sprite blk" />
           </div>
           <div class="block-row" style="left:235vw; bottom:78%;">
-            <img src="/images/mario/mario-brick.png" class="sprite blk" />
-            <img src="/images/mario/mario-q-block.png" class="sprite blk q-glow" />
-            <img src="/images/mario/mario-brick.png" class="sprite blk" />
+            <img :src="getImg('/images/mario/mario-brick.png')" class="sprite blk" />
+            <img :src="getImg('/images/mario/mario-q-block.png')" class="sprite blk q-glow" />
+            <img :src="getImg('/images/mario/mario-brick.png')" class="sprite blk" />
           </div>
-          <img src="/images/mario/mushroom.webp" class="sprite" style="left:236vw; bottom:87%; width:45px;" />
+          <img :src="getImg('/images/mario/mushroom.webp')" class="sprite" style="left:236vw; bottom:87%; width:45px;" />
           <!-- Pipe on the ground -->
           <div class="ground-pipe" style="left:290vw; bottom: 30%">
-            <img src="/images/mario/mario-pipe.png" class="sprite pipe-img" />
+            <img :src="getImg('/images/mario/mario-pipe.png')" class="sprite pipe-img" />
           </div>
         </div>
       </div>
@@ -58,15 +58,11 @@
     <!-- ============ SCENE 2: UNDERGROUND (? Block Gallery) ============ -->
     <section class="scene scene-underground" id="scene2">
       <!-- 
-        Snap points to catch the scroll when photo reveals 
-        (sub = 0.70 means 70% of the way through this block's scroll allocation)
+        Global Scroll Snapping points for Scene 2. 
+        Top is calculated to be the exact point where scrollP2 reaches 0.75 (Pause phase) for each block.
       -->
-      <div 
-        v-for="i in photos.length" 
-        :key="'snap-'+i"
-        class="snap-point"
-        :style="{ top: `${((i - 1 + 0.70) / photos.length) * 500}vh` }"
-      ></div>
+      <div v-for="i in photos.length" :key="'snap-'+i" class="snap-point"
+           :style="{ top: `${((i - 1 + 0.7) / photos.length) * 300}vh` }"></div>
 
       <div class="sticky-frame underground-frame">
         <div class="underground-bg"></div>
@@ -84,7 +80,7 @@
             v-for="(photo, i) in photos"
             :key="i"
             class="q-station"
-            :style="{ left: `${150 + i * 50}vw` }"
+            :style="{ left: `${150 + i * 80}vw` }"
           >
             <!-- Photo (appears ABOVE block when hit) -->
             <Transition name="photo-pop">
@@ -94,8 +90,8 @@
             </Transition>
             <!-- ? Block (Mario hits from below) -->
             <div class="q-box" :class="{ hit: hitBlocks[i], idle: !hitBlocks[i] }">
-              <img v-if="!hitBlocks[i]" src="/images/mario/mario-q-block.png" class="q-img" />
-              <img v-else src="/images/mario/mario-brick.png" class="q-img" />
+              <img v-if="!hitBlocks[i]" :src="getImg('/images/mario/mario-q-block.png')" class="q-img" />
+              <img v-else :src="getImg('/images/mario/mario-brick.png')" class="q-img" />
             </div>
           </div>
         </div>
@@ -145,7 +141,7 @@
     <!-- ============ JIAN-MARIO (fixed character) ============ -->
     <div class="mario-fixed" :class="[{ walking: isWalking && !inPipe }, activeSceneClass]">
       <div class="mario-char" :style="marioStyle">
-        <img src="/images/mario/jianmario.png" alt="Jian-Mario" />
+        <img :src="getImg('/images/mario/jianmario.png')" alt="Jian-Mario" />
       </div>
     </div>
 
@@ -164,25 +160,28 @@
 </template>
 
 <script setup>
+import { getImg } from '../utils/imagePath'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 // ===== DATA =====
 const score = ref(120307)
 const eventDate = ref('2026.03.07 18:00')
-const venueName = ref('루엘 파티플레이스')
+const venueName = ref('Ruel Party Place')
 const kakaoMapUrl = 'https://map.kakao.com/link/to/236178717'
 const naverMapUrl = 'https://naver.me/GOPeemGQ'
 
 const photos = ref([
-  '/images/photo1.jpg',
-  '/images/photo2.jpg',
-  '/images/photo3.jpg',
-  '/images/photo4.jpg'
+  getImg('/images/boxjian.jpeg'),
+  getImg('/images/angjian.jpeg'),
+  getImg('/images/boojian.jpeg'),
+  getImg('/images/smilejian.jpeg'),
+  getImg('/images/angryjian.jpeg'),
+  getImg('/images/jiansmile.jpeg')
 ])
 
 const parkingPhotos = ref([
-  '/images/mario/parking1.png',
-  '/images/mario/parking2.jpg'
+  getImg('/images/mario/parking1.png'),
+  getImg('/images/mario/parking2.jpg')
 ])
 const parkingIndex = ref(0)
 const nextParking = () => {
@@ -223,8 +222,8 @@ const undergroundOffset = computed(() => {
   
   // First block needs 100vw of travel (since Mario sits at 50vw and block is at 150vw)
   const initialTravel = 100 
-  // Subsequent blocks are 50vw apart
-  const spacing = 50 
+  // Subsequent blocks are 80vw apart
+  const spacing = 80 
   
   let offset = 0
   for (let i = 0; i < n; i++) {
@@ -293,20 +292,21 @@ const modalSrc = computed(() => modalList.value[modalIndex.value])
 
 // Teleport the background scroll to the current photo's block
 const scrollToPhoto = (index) => {
-  // Only applies to the underground gallery (photos)
-  if (modalList.value !== photos.value) return
+  if (photos.value !== modalList.value) return // Only teleport for main gallery
   
   const vh = window.innerHeight
-  const s2Start = vh * 6
-  const s2Height = vh * 5 // from scrollP1 logic
+  // Scene 2 starts at vh * 6
+  const s2 = vh * 6
+  // Scene 2 scroll length is vh * 3
+  const s2Length = vh * 3
+  
   const n = photos.value.length
+  // Target scrollP2 is at the end of the 'land' phase of the target block
+  // approach + jump + peak + land = 0.75 of the block's scroll phase
+  const targetP2 = (index / n) + (0.75 / n)
   
-  const blockStart = index / n
-  // 0.75 is the 'pause' phase where photo is fully revealed
-  const targetP2 = blockStart + (0.75 / n) 
-  
-  const targetScrollY = s2Start + (targetP2 * s2Height)
-  window.scrollTo({ top: targetScrollY, behavior: 'instant' })
+  const targetY = s2 + (targetP2 * s2Length)
+  window.scrollTo({ top: targetY, behavior: 'instant' })
 }
 
 const openModal = (i) => { 
@@ -354,12 +354,12 @@ const handleScroll = () => {
   // Scene 1: 600vh tall, sticky for 500vh
   scrollP1.value = Math.min(Math.max(y / (vh * 5), 0), 1)
 
-  // Scene 2: 600vh tall, sticky for 500vh (enough room for per-block phases)
+  // Scene 2: 400vh tall, sticky for 300vh (faster scroll speed)
   const s2 = vh * 6
-  scrollP2.value = Math.min(Math.max((y - s2) / (vh * 5), 0), 1)
+  scrollP2.value = Math.min(Math.max((y - s2) / (vh * 3), 0), 1)
 
-  // Scene 3: starts after Scene 2 (600vh + 600vh = 1200vh)
-  const s3 = vh * 12
+  // Scene 3: starts after Scene 2 (600vh + 400vh = 1000vh)
+  const s3 = vh * 10
   scrollP3.value = Math.min(Math.max((y - s3) / (vh * 2), 0), 1)
 
   // === SCENE 1: Mario X movement ===
@@ -466,11 +466,17 @@ onUnmounted(() => {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@font-face {
+  font-family: 'DungGeunMo';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 /* ===== BASE ===== */
 .mario-world {
   background: #000;
-  font-family: 'Press Start 2P', cursive;
+  font-family: 'Press Start 2P', 'DungGeunMo', cursive;
   color: #fff;
   text-transform: uppercase;
 
@@ -481,9 +487,15 @@ onUnmounted(() => {
   --mario-bottom-s3: 15vh;    /* Scene 3: 클리어 화면 (스크롤시 추가 하강됨) */
   --mario-height: 130px;      /* 데스크탑 마리오 캐릭터 높이 */
 }
+
+/* 픽셀 폰트는 굵은(bold) 글자체를 지원하지 않아 폰트가 깨질 수 있습니다. 강제로 normal 적용 */
+.mario-world strong, .mario-world b, .mario-world h1 {
+  font-weight: normal;
+}
+
 .scene { position: relative; }
 .scene-ground { height: 600vh; background: #5c94fc; z-index: 1; }
-.scene-underground { height: 600vh; background: #1a0a2e; position: relative; z-index: 2; }
+.scene-underground { height: 400vh; background: #1a0a2e; position: relative; z-index: 2; }
 .scene-clear { height: 300vh; background: #0a0a1a; position: relative; z-index: 3; }
 
 .sticky-frame {
@@ -603,8 +615,8 @@ onUnmounted(() => {
 
 /* Revealed photo — pops UP above the block */
 .revealed-photo {
-  margin-bottom: 10px;
-  width: 180px; height: 180px;
+  margin-bottom: 30px;
+  width: 250px; height: 250px;
   border: 4px solid rgba(255,255,255,0.4);
   border-radius: 6px;
   overflow: hidden;
@@ -813,7 +825,7 @@ onUnmounted(() => {
   .blk { width: 45px; height: 45px; }
   .pipe-img { width: 80px; }
   .q-box { width: 55px; height: 55px; }
-  .revealed-photo { width: 150px; height: 150px; }
+  .revealed-photo { width: 250px; height: 250px; margin-bottom: 30px; }
   .scene-label { font-size: 0.5rem; top: 45px; }
   .clear-card { width: 92%; padding: 16px; }
   .clear-title { font-size: 0.7rem; }
@@ -839,7 +851,7 @@ onUnmounted(() => {
   .blk { width: 38px; height: 38px; }
   .pipe-img { width: 65px; }
   .q-box { width: 45px; height: 45px; }
-  .revealed-photo { width: 130px; height: 130px; }
+  .revealed-photo { width: 200px; height: 200px; margin-bottom: 25px; }
 }
 </style>
 

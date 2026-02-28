@@ -8,14 +8,14 @@
     </router-view>
 
     <!-- Theme Switcher (Optional/Debug) -->
-    <div class="theme-nav">
+    <!-- <div class="theme-nav">
       <router-link to="/disney" class="nav-link">Disney Edition</router-link>
       <router-link to="/pixar" class="nav-link">Pixar Edition</router-link>
       <router-link to="/ghibli" class="nav-link">Ghibli Edition</router-link>
       <router-link to="/pacman" class="nav-link">Pacman Edition</router-link>
       <router-link to="/lego" class="nav-link">Lego Edition</router-link>
       <router-link to="/mario" class="nav-link">Mario Edition</router-link>
-    </div>
+    </div> -->
   </div>
 </template>
 

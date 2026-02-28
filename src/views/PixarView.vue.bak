@@ -1,0 +1,267 @@
+<template>
+  <div class="pixar-theme">
+    <div class="scroll-container">
+      <!-- Toy Story Sky Header -->
+      <section class="hero-section reveal">
+        <div class="cloud-bg">
+          <div class="cloud" v-for="n in 5" :key="n" :class="'c'+n"></div>
+        </div>
+        <div class="hero-content">
+          <div class="bouncy-wrap">
+            <h1 class="pixar-title">
+              <span class="letter">J</span>
+              <span class="letter">I</span>
+              <span class="letter">A</span>
+              <span class="letter">N</span>
+            </h1>
+          </div>
+          <div class="sub-title">TO THE INFINITY AND BEYOND!</div>
+          <div class="baby-frame">
+            <div class="ball-bg"></div>
+            <!-- <img src="/images/baby-cutout.png" alt="Jian" class="baby-pixar" /> -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Playful Message Area -->
+      <section class="message-section reveal">
+        <div class="talk-bubble">
+          <p class="greeting">{{ message }}</p>
+        </div>
+      </section>
+
+      <!-- Gallery -->
+      <section class="gallery-section reveal">
+        <h2 class="section-title">Adventure Log</h2>
+        <div class="gallery-grid">
+          <div 
+            v-for="(photo, index) in photos" 
+            :key="index"
+            class="gallery-item-wrapper"
+            @click="openModal(index)"
+          >
+             <div class="gallery-item" :style="{ backgroundImage: `url(${photo})` }"></div>
+             <div class="item-shadow"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Event Info -->
+      <section class="info-section reveal">
+        <div class="location-card">
+          <div class="info-box date-box">
+             <div class="box-label">MISSION DATE</div>
+             <div class="box-value">{{ eventDate }}</div>
+          </div>
+          <div class="info-box venue-box">
+             <div class="box-label">HEADQUARTERS</div>
+             <div class="box-value">{{ venueName }}</div>
+          </div>
+          <div class="map-area">
+            <div class="btn-group">
+               <a :href="kakaoMapUrl" target="_blank" class="pixar-btn yellow">KAKAOMAP</a>
+               <a :href="naverMapUrl" target="_blank" class="pixar-btn green">NAVERMAP</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Created by Mommy & Daddy</p>
+        <div class="pixar-lamp">💡</div>
+      </footer>
+    </div>
+
+    <!-- Simple Modal -->
+    <div v-if="modalOpen" class="modal" @click="modalOpen = false">
+       <img :src="photos[currentIndex]" class="modal-img" />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const message = ref(`우리의 작은 모험가 지안이가\n세상에 나온 지 벌써 일 년이 되었습니다!\n\n무한한 꿈과 용기가 가득할 지안이의 미래를\n함께 응원하고 축하해 주세요.\n멋진 모험에 여러분을 초대합니다!`)
+const eventDate = ref('2026. 03. 07 SAT 18:00')
+const venueName = ref('루엘 파티플레이스')
+const photos = ref(['/images/photo1.jpg', '/images/photo2.jpg', '/images/photo3.jpg', '/images/photo4.jpg'])
+const kakaoMapUrl = 'https://map.kakao.com/link/to/236178717'
+const naverMapUrl = 'https://naver.me/GOPeemGQ'
+
+const modalOpen = ref(false)
+const currentIndex = ref(0)
+const openModal = (i) => { currentIndex.value = i; modalOpen.value = true }
+
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
+  }, { threshold: 0.1 })
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+})
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Jua&display=swap');
+
+.pixar-theme {
+  font-family: 'Jua', sans-serif;
+  background: #fdf6e3;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-container {
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+.reveal {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hero */
+.hero-section {
+  height: 100vh;
+  max-height: 700px;
+  position: relative;
+  background: #50aeff; /* Toy Story Blue */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.cloud-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.cloud { position: absolute; background: #fff; border-radius: 100px; }
+.cloud::after, .cloud::before { content: ''; position: absolute; background: #fff; border-radius: 50%; }
+
+.c1 { width: 100px; height: 35px; top: 15%; left: 10%; opacity: 0.8; }
+.c1::after { width: 50px; height: 50px; top: -25px; left: 15px; }
+.c1::before { width: 40px; height: 40px; top: -15px; left: 45px; }
+
+.c2 { width: 120px; height: 40px; top: 30%; right: 15%; opacity: 0.6; }
+.c2::after { width: 60px; height: 60px; top: -30px; left: 20px; }
+
+.c3 { width: 80px; height: 25px; bottom: 20%; left: 20%; opacity: 0.7; }
+.c4 { width: 150px; height: 50px; bottom: 10%; right: 5%; opacity: 0.5; }
+
+.hero-content { position: relative; z-index: 2; width: 100%; }
+
+.pixar-title {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 5rem;
+  color: #ffcc00; /* Pixar Yellow */
+  -webkit-text-stroke: 4px #005bb7; /* Pixar Blue Border */
+  letter-spacing: 5px;
+  margin-bottom: 0;
+}
+
+.letter { display: inline-block; animation: bounce 2s infinite ease-in-out; }
+.letter:nth-child(2) { animation-delay: 0.2s; }
+.letter:nth-child(3) { animation-delay: 0.4s; }
+.letter:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.sub-title {
+  font-family: 'Luckiest Guy', cursive;
+  color: #fff;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px #ff3333;
+  margin-top: -10px;
+}
+
+.baby-frame {
+  margin-top: 40px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.ball-bg {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle at 30% 30%, #ffcc00, #ff9900);
+  border-radius: 50%;
+  border: 4px solid #005bb7;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.baby-pixar {
+  position: absolute;
+  width: 65%;
+  bottom: 0px;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+  animation: wobble 4s infinite ease-in-out;
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(5deg) scale(1.05); }
+}
+
+/* Message */
+.message-section { padding: 60px 30px; background: #fff; }
+.talk-bubble {
+  background: #f0f0f0;
+  padding: 30px;
+  border-radius: 30px;
+  position: relative;
+  text-align: center;
+  border: 4px solid #333;
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+}
+.greeting { font-size: 1.15rem; line-height: 2; white-space: pre-line; color: #222; }
+
+/* Gallery */
+.gallery-section { padding: 60px 20px; background: #fdf6e3; }
+.section-title { text-align: center; font-family: 'Luckiest Guy', cursive; font-size: 2rem; color: #ff3333; margin-bottom: 40px; letter-spacing: 2px; }
+.gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.gallery-item-wrapper { position: relative; cursor: pointer; }
+.gallery-item { aspect-ratio: 1; background-size: cover; background-position: center; border-radius: 15px; border: 5px solid #fff; position: relative; z-index: 2; }
+.item-shadow { position: absolute; top: 10px; left: 10px; width: 100%; height: 100%; background: #005bb7; border-radius: 15px; z-index: 1; }
+
+/* Info */
+.info-section { padding: 80px 30px; }
+.location-card { background: #fff; border: 4px solid #333; border-radius: 40px; padding: 40px; box-shadow: 12px 12px 0 #ffeb3b; }
+.info-box { margin-bottom: 30px; }
+.box-label { font-family: 'Luckiest Guy', cursive; font-size: 0.9rem; color: #005bb7; margin-bottom: 5px; }
+.box-value { font-size: 1.2rem; font-weight: bold; color: #222; }
+
+.btn-group { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
+.pixar-btn {
+  padding: 15px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1.1rem;
+  text-align: center;
+  border: 4px solid #333;
+  transition: transform 0.1s;
+}
+.pixar-btn:active { transform: translateY(4px); }
+.yellow { background: #ffcc00; color: #333; }
+.green { background: #03c75a; color: #fff; }
+
+.footer { padding: 60px 20px; text-align: center; background: #fff; }
+.pixar-lamp { font-size: 2.5rem; margin-top: 20px; opacity: 0.5; }
+
+/* Modal */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(255,255,255,0.95); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+.modal-img { max-width: 90%; max-height: 70vh; border: 8px solid #333; border-radius: 20px; }
+</style>

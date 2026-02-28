@@ -141,7 +141,7 @@
     </section>
 
     <!-- ============ JIAN-MARIO (fixed character) ============ -->
-    <div class="mario-fixed" :class="{ walking: isWalking && !inPipe }">
+    <div class="mario-fixed" :class="[{ walking: isWalking && !inPipe }, activeSceneClass]">
       <div class="mario-char" :style="marioStyle">
         <img src="/images/mario/jianmario.png" alt="Jian-Mario" />
       </div>
@@ -330,6 +330,13 @@ const handleKeydown = (e) => {
   if (e.key === 'Escape') closeModal()
 }
 
+// Active Scene for CSS
+const activeSceneClass = computed(() => {
+  if (scrollP3.value > 0) return 'in-scene3'
+  if (scrollP2.value > 0) return 'in-scene2'
+  return 'in-scene1'
+})
+
 // ===== SCROLL HANDLER =====
 const handleScroll = () => {
   const y = window.scrollY
@@ -457,6 +464,13 @@ onUnmounted(() => {
   font-family: 'Press Start 2P', cursive;
   color: #fff;
   text-transform: uppercase;
+
+  /* ===== MARIO BOTTOM SETTINGS ===== */
+  /* 각 화면별로 마리오의 기본 바닥 위치를 설정합니다 */
+  --mario-bottom-s1: 210px; /* Scene 1: 그라운드 */
+  --mario-bottom-s2: 120px; /* Scene 2: 지하 갤러리 */
+  --mario-bottom-s3: 150px; /* Scene 3: 클리어 화면 (스크롤시 추가 하강됨) */
+  --mario-height: 130px;    /* 데스크탑 마리오 캐릭터 높이 */
 }
 .scene { position: relative; }
 .scene-ground { height: 600vh; background: #5c94fc; z-index: 1; }
@@ -549,9 +563,9 @@ onUnmounted(() => {
 
 .q-station {
   position: absolute;
-  /* Mario bottom is 210px, height is 130px -> head at 340px */
-  /* Jump height is 60px -> head peak at 400px */
-  bottom: 400px;
+  /* Block bottom height automatically calculated: 
+     Mario Bottom + Mario Height + Jump Height (60px) */
+  bottom: calc(var(--mario-bottom-s2) + var(--mario-height) + 60px);
   transform: translateX(-50%); /* Perfectly center the block */
   display: flex; flex-direction: column;
   align-items: center;
@@ -687,15 +701,21 @@ onUnmounted(() => {
 /* ===== JIAN-MARIO (FIXED) ===== */
 .mario-fixed {
   position: fixed;
-  bottom: 210px; left: 50%;
+  left: 50%;
   transform: translateX(-50%);
   z-index: 5; /* Lowered from 1000 so clear-card (z-10) covers it */
   pointer-events: none;
-  .modal-content { max-width: 75%; }
-  .nav-btn { font-size: 1.5rem; padding: 10px; }
+  transition: bottom 0.3s ease-in-out; /* Smooth transition between scenes */
 }
+.mario-fixed.in-scene1 { bottom: var(--mario-bottom-s1); }
+.mario-fixed.in-scene2 { bottom: var(--mario-bottom-s2); }
+.mario-fixed.in-scene3 { bottom: var(--mario-bottom-s3); }
+
+.mario-fixed .modal-content { max-width: 75%; }
+.mario-fixed .nav-btn { font-size: 1.5rem; padding: 10px; }
+
 .mario-char {
-  width: 110px; height: 130px;
+  width: 110px; height: var(--mario-height);
   transition: transform 0.08s linear;
 }
 .mario-char img {
@@ -767,6 +787,12 @@ onUnmounted(() => {
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
+  .mario-world {
+    --mario-bottom-s1: 45px;
+    --mario-bottom-s2: 45px;
+    --mario-bottom-s3: 45px;
+    --mario-height: 85px;
+  }
   .title-card h1 { font-size: 1.2rem; }
   .blink-text { font-size: 0.45rem; }
   .hud { top: 40px; padding: 0 16px; font-size: 0.45rem; }
@@ -775,7 +801,6 @@ onUnmounted(() => {
   .blk { width: 45px; height: 45px; }
   .pipe-img { width: 80px; }
   .q-box { width: 55px; height: 55px; }
-  .q-station { bottom: 190px; } /* Mario bottom 45 + height 85 = 130px head + 60px jump = 190px */
   .revealed-photo { width: 150px; height: 150px; }
   .scene-label { font-size: 0.5rem; top: 45px; }
   .clear-card { width: 92%; padding: 16px; }
@@ -788,12 +813,14 @@ onUnmounted(() => {
 }
 
 @media (max-width: 375px) {
+  .mario-world {
+    --mario-height: 68px;
+  }
   .title-card h1 { font-size: 1rem; }
   .mario-char { width: 56px; height: 68px; }
   .blk { width: 38px; height: 38px; }
   .pipe-img { width: 65px; }
   .q-box { width: 45px; height: 45px; }
-  .q-station { bottom: 173px; } /* Mario bottom 45 + height 68 = 113px head + 60px jump = 173px */
   .revealed-photo { width: 130px; height: 130px; }
 }
 </style>

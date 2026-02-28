@@ -135,6 +135,8 @@
               <a :href="kakaoMapUrl" target="_blank" class="pixel-btn kakao">KAKAO MAP</a>
               <a :href="naverMapUrl" target="_blank" class="pixel-btn naver">NAVER MAP</a>
             </div>
+
+            <div class="creator-stamp">CREATED BY JIAN'S FAMILY</div>
           </div>
         </Transition>
       </div>
@@ -258,8 +260,15 @@ const marioStyle = computed(() => {
       opacity: 1 - pipeP
     }
   }
+  let currentOpacity = 1
+  if (scrollP3.value > 0) {
+    // Fade out Mario completely during the first 10% of Scene 3
+    currentOpacity = Math.max(1 - (scrollP3.value / 0.1), 0)
+  }
+
   return {
-    transform: `translateX(${marioX.value}px) translateY(${-marioY.value}px)`
+    transform: `translateX(${marioX.value}px) translateY(${-marioY.value}px)`,
+    opacity: currentOpacity
   }
 })
 
@@ -466,11 +475,11 @@ onUnmounted(() => {
   text-transform: uppercase;
 
   /* ===== MARIO BOTTOM SETTINGS ===== */
-  /* 각 화면별로 마리오의 기본 바닥 위치를 설정합니다 */
-  --mario-bottom-s1: 210px; /* Scene 1: 그라운드 */
-  --mario-bottom-s2: 120px; /* Scene 2: 지하 갤러리 */
-  --mario-bottom-s3: 150px; /* Scene 3: 클리어 화면 (스크롤시 추가 하강됨) */
-  --mario-height: 130px;    /* 데스크탑 마리오 캐릭터 높이 */
+  /* 단말기 세로 길이에 비례하도록 px 대신 vh를 사용해 어떤 모바일화면이든 바닥에 붙도록 변경합니다 */
+  --mario-bottom-s1: 28vh;    /* Scene 1: 그라운드 위 위치 (약 20~25vh) */
+  --mario-bottom-s2: 15vh;    /* Scene 2: 지하 갤러리 위치 */
+  --mario-bottom-s3: 15vh;    /* Scene 3: 클리어 화면 (스크롤시 추가 하강됨) */
+  --mario-height: 130px;      /* 데스크탑 마리오 캐릭터 높이 */
 }
 .scene { position: relative; }
 .scene-ground { height: 600vh; background: #5c94fc; z-index: 1; }
@@ -642,6 +651,11 @@ onUnmounted(() => {
   font-size: 0.55rem; line-height: 2.2;
   text-align: left; margin-bottom: 16px;
 }
+.creator-stamp {
+  margin-top: 24px;
+  font-size: 0.45rem;
+  color: #999;
+}
 
 /* Parking block */
 .parking-block {
@@ -710,9 +724,6 @@ onUnmounted(() => {
 .mario-fixed.in-scene1 { bottom: var(--mario-bottom-s1); }
 .mario-fixed.in-scene2 { bottom: var(--mario-bottom-s2); }
 .mario-fixed.in-scene3 { bottom: var(--mario-bottom-s3); }
-
-.mario-fixed .modal-content { max-width: 75%; }
-.mario-fixed .nav-btn { font-size: 1.5rem; padding: 10px; }
 
 .mario-char {
   width: 110px; height: var(--mario-height);
@@ -788,9 +799,10 @@ onUnmounted(() => {
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
   .mario-world {
-    --mario-bottom-s1: 45px;
-    --mario-bottom-s2: 45px;
-    --mario-bottom-s3: 45px;
+    /* 모바일에서도 동일하게 vh 비율을 기반으로 잡습니다 */
+    --mario-bottom-s1: 28vh;
+    --mario-bottom-s2: 15vh;
+    --mario-bottom-s3: 15vh;
     --mario-height: 85px;
   }
   .title-card h1 { font-size: 1.2rem; }
@@ -805,11 +817,17 @@ onUnmounted(() => {
   .scene-label { font-size: 0.5rem; top: 45px; }
   .clear-card { width: 92%; padding: 16px; }
   .clear-title { font-size: 0.7rem; }
-  .clear-details { font-size: 0.45rem; }
+  .clear-details { font-size: 0.45rem; line-height: 2.0; }
   .pixel-btn { padding: 11px; font-size: 0.43rem; }
+  .map-buttons { flex-direction: column; } /* Stack map buttons on mobile */
+  
   .parking-title { font-size: 0.43rem; }
   .bgm-bar { top: 10px; right: 10px; padding: 5px 9px; }
   .bgm-label { font-size: 7.5px; }
+  
+  /* Modal fixes for mobile */
+  .modal-content { max-width: 90%; }
+  .nav-btn { font-size: 1.2rem; padding: 10px; }
 }
 
 @media (max-width: 375px) {

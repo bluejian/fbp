@@ -43,7 +43,7 @@
           class="gallery-item-wrap fade-in"
           :style="{ transitionDelay: `${(i % 2) * 0.15}s` }"
         >
-          <div class="polaroid" @click="openModal(i)">
+          <div class="polaroid" @click="openModal('gallery', i)">
             <img :src="photo" alt="gallery image" />
           </div>
         </div>

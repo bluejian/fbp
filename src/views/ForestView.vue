@@ -176,9 +176,8 @@ const shareKakao = () => {
     window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: '지안이의 첫 돌에 초대합니다 🌿',
-        description: '사계절을 무사히 지나 첫 생일을 맞이하였습니다.\n소중한 시간을 내어 함께 축하해주세요.',
-        imageUrl: 'https://bluejian.github.io/fbp/images/jian/1.jpeg', // 외부에서 접근 가능한(배포된) 이미지 주소
+        title: '지안이의 돌잔치에 초대합니다 🎉',
+        imageUrl: 'https://bluejian.github.io/fbp/images/jian/0.jpeg', // 외부에서 접근 가능한(배포된) 이미지 주소
         link: {
           mobileWebUrl: 'https://bluejian.github.io/fbp',
           webUrl: 'https://bluejian.github.io/fbp',

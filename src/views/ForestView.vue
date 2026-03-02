@@ -6,7 +6,7 @@
       <div class="hero-content fade-in">
         <h1 class="hero-title">Jian's 1st Birthday</h1>
         <div class="main-portrait-wrap">
-          <img :src="getImg('/images/photo1.jpg')" alt="Jian Portrait" class="main-portrait" />
+          <img :src="getImg('/images/jian/0.jpeg')" alt="Jian Portrait" class="main-portrait" />
         </div>
         
         <div class="scroll-ind">
@@ -19,23 +19,25 @@
     <!-- GREETING SECTION -->
     <section class="greeting-section fade-in">
       <div class="greeting-card">
-        <div class="leaf-decor top-left">🌿</div>
+        <div class="leaf-decor top-left">🫧</div>
         <p class="greeting-text">
-          어느 작은 숲속에 피어난 새싹처럼<br/><br/>
-          조금씩 자라나는 지안이를 보며<br/>
-          저희 가족은 매일 감사와 행복을 배웁니다.<br/><br/><br/>
-          
-          지안이의 여정이 햇살처럼 따뜻하고<br/>
-          나무처럼 푸르게 자라날 수 있도록<br/>
-          귀한 걸음 하시어 축복해 주시면 감사하겠습니다.
+          봄의 설렘, 여름의 열정<br>
+          가을의 풍요, 겨울의 온기까지<br><br>
+
+          지안이가 사계절을 무사히 지나<br>
+          첫 생일을 맞이하였습니다.<br><br>
+
+          지안이를 아끼고 사랑해주신 분들을 위해<br>
+          작은 자리를 마련하였으니<br>
+          소중한 시간을 내어 함께<br> 축하해주시면 감사하겠습니다.
         </p>
-        <div class="leaf-decor bottom-right">🌿</div>
+        <div class="leaf-decor bottom-right">🫧</div>
       </div>
     </section>
 
     <!-- GALLERY SECTION -->
     <section class="gallery-section">
-      <h2 class="section-title fade-in">Memory Leaves</h2>
+      <h2 class="section-title fade-in">Gallery</h2>
       <div class="gallery-grid">
         <div 
           v-for="(photo, i) in photos" 
@@ -50,17 +52,17 @@
       </div>
       
       <!-- Easter Egg Mario Link -->
-      <div class="easter-egg-wrap fade-in">
+      <!-- <div class="easter-egg-wrap fade-in">
         <router-link to="/mario" class="hidden-mario-link">
           <span class="mushroom-hint">🍄</span>
         </router-link>
-      </div>
+      </div> -->
     </section>
 
     <!-- INFO & LOCATION SECTION -->
     <section class="info-section fade-in">
       <div class="info-card">
-        <div class="info-header">INVITATION</div>
+        <div class="info-header">LOCATION</div>
         
         <!-- Invitation Photos Carousel -->
         <div class="info-carousel">
@@ -84,11 +86,17 @@
         <div class="info-body">
           <p><strong>일시:</strong> {{ eventDate }}</p>
           <p><strong>장소:</strong> {{ venueName }}</p>
+          <p style="font-size: 12px; color:red">🅿️ 주차는 공영 주차장을 이용해주세요.</p>
         </div>
         <div class="map-actions">
           <a :href="kakaoMapUrl" target="_blank" class="map-btn kakao">카카오맵</a>
           <a :href="naverMapUrl" target="_blank" class="map-btn naver">네이버맵</a>
         </div>
+        
+        <button class="map-btn share-btn fade-in" @click="shareKakao">
+          카카오톡으로 초대장 보내기
+        </button>
+
         <div class="family-sig">
           지안이네 가족 올림
         </div>
@@ -120,18 +128,18 @@ const naverMapUrl = 'https://naver.me/GOPeemGQ'
 
 // Use actual user photos
 const photos = ref([
-  getImg('/images/boxjian.jpeg'),
-  getImg('/images/angjian.jpeg'),
-  getImg('/images/boojian.jpeg'),
-  getImg('/images/smilejian.jpeg'),
-  getImg('/images/angryjian.jpeg'),
-  getImg('/images/jiansmile.jpeg')
+  getImg('/images/jian/1.jpeg'),
+  getImg('/images/jian/2.jpeg'),
+  getImg('/images/jian/3.jpeg'),
+  getImg('/images/jian/4.jpeg'),
+  getImg('/images/jian/5.jpeg'),
+  getImg('/images/jian/6.jpeg'),
 ])
 
 // Info/Parking Photos
 const infoPhotos = ref([
-  getImg('/images/mario/parking2.jpg'),
-  getImg('/images/mario/parking1.png'),
+  getImg('/images/parking2.jpg'),
+  getImg('/images/parking1.png'),
 ])
 
 // === INFO CAROUSEL LOGIC ===
@@ -156,8 +164,43 @@ const closeModal = () => { modalOpen.value = false }
 const nextPhoto = () => { modalIndex.value = (modalIndex.value + 1) % activePhotos.value.length }
 const prevPhoto = () => { modalIndex.value = (modalIndex.value - 1 + activePhotos.value.length) % activePhotos.value.length }
 
+// === KAKAO SHARE LOGIC ===
+const initKakao = () => {
+  if (window.Kakao && !window.Kakao.isInitialized()) {
+    window.Kakao.init('9027ba1304f34e583d46596ff1bac4cf');
+  }
+}
+
+const shareKakao = () => {
+  if (window.Kakao) {
+    window.Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '지안이의 첫 돌에 초대합니다 🌿',
+        description: '사계절을 무사히 지나 첫 생일을 맞이하였습니다.\n소중한 시간을 내어 함께 축하해주세요.',
+        imageUrl: 'https://bluejian.github.io/fbp/images/jian/1.jpeg', // 외부에서 접근 가능한(배포된) 이미지 주소
+        link: {
+          mobileWebUrl: 'https://bluejian.github.io/fbp',
+          webUrl: 'https://bluejian.github.io/fbp',
+        },
+      },
+      buttons: [
+        {
+          title: '초대장 보기',
+          link: {
+            mobileWebUrl: 'https://bluejian.github.io/fbp',
+            webUrl: 'https://bluejian.github.io/fbp',
+          },
+        },
+      ],
+    });
+  }
+}
+
 // === INTERSECTION OBSERVER FOR FADE-INS ===
 onMounted(() => {
+  initKakao()
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -183,7 +226,7 @@ onMounted(() => {
   --text-dark: #3a3a3a;
   
   background-color: var(--beige-bg);
-  background-image: url('/images/wt_py.jpeg');
+  background-image: url('/images/background-img.jpeg');
   background-repeat: repeat;
   background-size: 400px; /* Adjust size to make the pattern look natural */
   background-blend-mode: multiply; /* Optional, helps it blend into the beige */
@@ -234,7 +277,7 @@ onMounted(() => {
   margin-bottom: 2vh;
 }
 .main-portrait {
-  width: 100%; height: 100%; object-fit: cover;
+  width: 100%; height: 100%; transform: scale(1.8); translate: 0% 7%;
 }
 .scroll-ind {
   position: absolute; bottom: -10vh; left: 50%; transform: translateX(-50%);
@@ -415,15 +458,20 @@ onMounted(() => {
   color: var(--text-dark); font-size: 4vw; line-height: 2; margin: 0 0 2vw 0;
 }
 .map-actions {
-  display: flex; gap: 3vw; justify-content: center; margin-top: 8vw; margin-bottom: 8vw;
+  display: flex; gap: 3vw; justify-content: center; margin-top: 8vw; margin-bottom: 4vw;
 }
 .map-btn {
   flex: 1; padding: 3vw 0; border-radius: 8px; text-decoration: none; font-size: 3.8vw;
   font-weight: 700; transition: opacity 0.2s;
+  display: inline-block;
 }
 .map-btn.kakao { background: #FEE500; color: #392020; }
 .map-btn.naver { background: #03C75A; color: #fff; }
 .map-btn:active { opacity: 0.8; }
+
+.share-btn {
+  width: 100%; border: none; background: #FEE500; color: #392020; margin-bottom: 8vw; cursor: pointer; font-family: inherit;
+}
 
 .family-sig {
   font-size: 4.5vw; color: var(--wood-brown); margin-top: 4vw;
@@ -476,8 +524,9 @@ onMounted(() => {
   .info-header { font-size: 1.6rem; margin-bottom: 40px; }
   .info-carousel { margin-bottom: 40px; }
   .info-body p { font-size: 1.1rem; margin-bottom: 15px; }
-  .map-actions { gap: 20px; margin-top: 40px; margin-bottom: 40px; }
+  .map-actions { gap: 20px; margin-top: 40px; margin-bottom: 20px; }
   .map-btn { padding: 15px 0; font-size: 1.1rem; }
+  .share-btn { margin-bottom: 40px; padding: 15px 0; font-size: 1.1rem; }
   .family-sig { font-size: 1.2rem; padding-top: 30px; }
   
   .modal-close { font-size: 2rem; right: 30px; top: 30px; }

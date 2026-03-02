@@ -5,11 +5,12 @@ import GhibliView from '../views/GhibliView.vue'
 import PacmanView from '../views/PacmanView.vue'
 import LegoView from '../views/LegoView.vue'
 import MarioView from '../views/MarioView.vue'
+import ForestView from '../views/ForestView.vue'
 
 const routes = [
     {
         path: '/',
-        redirect: '/disney'
+        redirect: '/forest'
     },
     {
         path: '/disney',
@@ -40,6 +41,11 @@ const routes = [
         path: '/mario',
         name: 'Mario',
         component: MarioView
+    },
+    {
+        path: '/forest',
+        name: 'Forest',
+        component: ForestView
     }
 ]
 

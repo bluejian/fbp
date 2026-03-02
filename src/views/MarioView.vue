@@ -855,12 +855,12 @@ onUnmounted(() => {
 }
 </style>
 
-<style>
+<style scoped>
 /* 
   Global scroll snap to "catch" the scroll when the photo opens.
   It softly snaps when the user scrolls near a .snap-point.
 */
-html, body {
+.mario-world {
   scroll-snap-type: y proximity;
 }
 
